@@ -30,9 +30,9 @@ SecurityFilterChain securityFilterChain(HttpSecurity http)
                     // Catálogo público temporariamente bloqueado
                     .requestMatchers("/api/v1/catalogo-publico/**").denyAll()
 
-                    // MCP bloqueado até configurar autenticação específica
-                    // .requestMatchers("/api/v1/mcp/**").denyAll()
-                    .requestMatchers("/api/v1/mcp", "/api/v1/mcp/**").denyAll()
+                    // MCP acessível somente por administradores autenticados
+                    .requestMatchers("/api/v1/mcp", "/api/v1/mcp/**")
+                    .hasRole("ADMIN")
 
                     // APIs administrativas
                     .requestMatchers("/api/v1/produtos/**").hasRole("ADMIN")

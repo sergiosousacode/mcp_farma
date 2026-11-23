@@ -8,6 +8,7 @@ spring:
         version: 1.0.0
         protocol: STREAMABLE
         type: SYNC
+        tool-callback-converter: true
         streamable-http:
           mcp-endpoint: /api/v1/mcp
   datasource:

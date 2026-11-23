@@ -50,26 +50,24 @@ class SecurityConfigTest {
     }
 
 
-    @Test
-    @WithMockUser(username = "admin", roles = "ADMIN")
-    void deveBloquearAcessoMcpMesmoParaAdministrador()
-            throws Exception {
+    
+@Test
+void deveExigirAutenticacaoNoMcp() throws Exception {
+    mockMvc.perform(post("/api/v1/mcp")
+            .contentType("application/json")
+            .content("{}"))
+            .andExpect(status().isUnauthorized());
+}
 
-        mockMvc.perform(get("/api/v1/mcp/ferramentas"))
-                .andExpect(status().isForbidden());
-    }
+@Test
+@WithMockUser(username = "operador", roles = "USER")
+void deveBloquearMcpParaUsuarioSemPermissao() throws Exception {
+    mockMvc.perform(post("/api/v1/mcp")
+            .contentType("application/json")
+            .content("{}"))
+            .andExpect(status().isForbidden());
+}
 
-
-    @Test
-    @WithMockUser(username = "admin", roles = "ADMIN")
-    void deveBloquearEndpointMcpMesmoParaAdministrador()
-            throws Exception {
-
-        mockMvc.perform(post("/api/v1/mcp")
-                .contentType("application/json")
-                .content("{}"))
-                .andExpect(status().isForbidden());
-    }
 
 
 
