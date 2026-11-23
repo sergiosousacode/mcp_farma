@@ -1,6 +1,15 @@
 server:
   port: 8080
 spring:
+  ai:
+    mcp:
+      server:
+        name: mcp-farma
+        version: 1.0.0
+        protocol: STREAMABLE
+        type: SYNC
+        streamable-http:
+          mcp-endpoint: /api/v1/mcp
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5436/mcp_farma}
     username: ${DB_USER:mcp_farma}

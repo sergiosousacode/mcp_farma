@@ -26,6 +26,9 @@ import static org.mockito.Mockito.*;
 class ProdutoControllerTest {
 
     @Mock
+    private ProdutoConsultaService produtoConsultaService;
+
+    @Mock
     private ProdutoRepository produtoRepository;
 
     @Mock
@@ -41,7 +44,8 @@ class ProdutoControllerTest {
         controller = new ProdutoController(
                 produtoRepository,
                 precoRepository,
-                estoqueRepository
+                estoqueRepository,
+                produtoConsultaService
         );
     }
 

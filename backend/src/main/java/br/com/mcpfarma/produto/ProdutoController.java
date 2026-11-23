@@ -21,16 +21,19 @@ public class ProdutoController {
     private final ProdutoRepository repository;
     private final PrecoRepository precoRepository;
     private final EstoqueRepository estoqueRepository;
+    private final ProdutoConsultaService produtoConsultaService;
 
     public ProdutoController(
-            ProdutoRepository repository,
-            PrecoRepository precoRepository,
-            EstoqueRepository estoqueRepository) {
+        ProdutoRepository repository,
+        PrecoRepository precoRepository,
+        EstoqueRepository estoqueRepository,
+        ProdutoConsultaService produtoConsultaService) {
 
-        this.repository = repository;
-        this.precoRepository = precoRepository;
-        this.estoqueRepository = estoqueRepository;
-    }
+    this.repository = repository;
+    this.precoRepository = precoRepository;
+    this.estoqueRepository = estoqueRepository;
+    this.produtoConsultaService = produtoConsultaService;
+}
 
     // Listar produtos ou pesquisar por nome
     @GetMapping
@@ -74,13 +77,11 @@ public class ProdutoController {
     // Consultar produto pelo EAN
     @GetMapping("/ean/{ean}")
     public ResponseEntity<ProdutoResumo> buscarPorEan(
-            @PathVariable String ean) {
+        @PathVariable String ean) {
 
-        return repository.findByEan(ean)
-                .filter(Produto::isAtivo)
-                .map(this::converter)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return produtoConsultaService.buscarPorEan(ean)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Consultar produto, preço atual e estoque

@@ -26,10 +26,13 @@ SecurityFilterChain securityFilterChain(HttpSecurity http)
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/actuator/health").permitAll()
 
+
                     // Catálogo público temporariamente bloqueado
-                    .requestMatchers(
-                            "/api/v1/catalogo-publico/**"
-                    ).denyAll()
+                    .requestMatchers("/api/v1/catalogo-publico/**").denyAll()
+
+                    // MCP bloqueado até configurar autenticação específica
+                    // .requestMatchers("/api/v1/mcp/**").denyAll()
+                    .requestMatchers("/api/v1/mcp", "/api/v1/mcp/**").denyAll()
 
                     // APIs administrativas
                     .requestMatchers("/api/v1/produtos/**").hasRole("ADMIN")

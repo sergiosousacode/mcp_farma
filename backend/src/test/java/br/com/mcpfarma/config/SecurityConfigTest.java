@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,5 +48,29 @@ class SecurityConfigTest {
         mockMvc.perform(get("/api/v1/produtos"))
                 .andExpect(status().isForbidden());
     }
+
+
+    @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    void deveBloquearAcessoMcpMesmoParaAdministrador()
+            throws Exception {
+
+        mockMvc.perform(get("/api/v1/mcp/ferramentas"))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    void deveBloquearEndpointMcpMesmoParaAdministrador()
+            throws Exception {
+
+        mockMvc.perform(post("/api/v1/mcp")
+                .contentType("application/json")
+                .content("{}"))
+                .andExpect(status().isForbidden());
+    }
+
+
 
 }
